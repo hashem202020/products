@@ -9,15 +9,17 @@ import Foundation
 
 final class ProductsListViewModel: ObservableObject {
     private let getProductsListUseCase: GetProductsListUseCase
-    
+    private let productsListCoordinator: ProductsListCoordinator
     @Published var products: [ProductPresentationModel] = []
     
-    init(getProductsListUseCase: GetProductsListUseCase) {
+    init(getProductsListUseCase: GetProductsListUseCase,
+         productsListCoordinator: ProductsListCoordinator) {
         self.getProductsListUseCase = getProductsListUseCase
+        self.productsListCoordinator = productsListCoordinator
         loadProducts()
     }
     
-    func loadProducts() {
+    private func loadProducts() {
         Task {
             do {
                let result = try await getProductsListUseCase.execute()
@@ -29,4 +31,9 @@ final class ProductsListViewModel: ObservableObject {
             }
         }
     }
+    
+    func openDetails(product: ProductPresentationModel) {
+        productsListCoordinator.openProductDetails(with: product)
+    }
+    
 }

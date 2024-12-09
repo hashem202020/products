@@ -15,6 +15,9 @@ struct ProductsListView: View {
             LazyVStack(spacing: 8) {
                 ForEach(viewModel.products) { product in
                     ProductCard(product: product)
+                        .onTapGesture {
+                            viewModel.openDetails(product: product)
+                        }
                 }
             }
         }
